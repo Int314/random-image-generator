@@ -39,6 +39,7 @@ const translations = {
     loading: "Loading...",
     download: "Download",
     viewOnPixabay: "View on Pixabay",
+    shareOnTwitter: "Share",
 
     // Media types
     image: "Image",
@@ -104,6 +105,7 @@ const translations = {
     loading: "読み込み中...",
     download: "ダウンロード",
     viewOnPixabay: "Pixabayで表示",
+    shareOnTwitter: "シェア",
 
     // Media types
     image: "画像",

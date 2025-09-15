@@ -148,6 +148,19 @@ export default function MediaViewer() {
     }
   };
 
+  const handleShareOnTwitter = () => {
+    if (!currentMedia) return;
+
+    const appUrl = "https://random-image-generator-phi.vercel.app/";
+    const pixabayUrl = currentMedia.pageURL;
+    const tweetText = `Found an amazing ${mediaType}! 🎨\n\nOriginal media: ${pixabayUrl}\n\nDiscovered with Random Media Generator:`;
+    const hashtags = "RandomMediaGenerator";
+
+    const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}&url=${encodeURIComponent(appUrl)}&hashtags=${encodeURIComponent(hashtags)}`;
+
+    window.open(twitterUrl, "_blank", "width=550,height=420");
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-4">
       <div className="max-w-6xl mx-auto">
@@ -389,20 +402,63 @@ export default function MediaViewer() {
               </span>
             </div>
 
-            <div className="flex gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <button
                 type="button"
                 onClick={handleDownload}
-                className="flex-1 bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 transition duration-200 font-medium"
+                className="bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 transition duration-200 font-medium flex items-center justify-center gap-2"
               >
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                  />
+                </svg>
                 {t("download")}
+              </button>
+              <button
+                type="button"
+                onClick={handleShareOnTwitter}
+                className="bg-sky-500 text-white py-2 px-4 rounded-md hover:bg-sky-600 transition duration-200 font-medium flex items-center justify-center gap-2"
+              >
+                <svg
+                  className="w-5 h-5"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                </svg>
+                {t("shareOnTwitter")}
               </button>
               <a
                 href={currentMedia.pageURL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 bg-gray-600 text-white py-2 px-4 rounded-md hover:bg-gray-700 transition duration-200 font-medium text-center"
+                className="bg-gray-600 text-white py-2 px-4 rounded-md hover:bg-gray-700 transition duration-200 font-medium text-center flex items-center justify-center gap-2"
               >
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                  />
+                </svg>
                 {t("viewOnPixabay")}
               </a>
             </div>
