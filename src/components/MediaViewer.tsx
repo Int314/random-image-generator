@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 type MediaType = "image" | "video";
 
@@ -36,6 +37,7 @@ interface PixabayMedia {
 }
 
 export default function MediaViewer() {
+  const { language, setLanguage, t } = useLanguage();
   const [currentMedia, setCurrentMedia] = useState<PixabayMedia | null>(null);
   const [mediaType, setMediaType] = useState<MediaType>("image");
   const [loading, setLoading] = useState(false);
@@ -54,27 +56,27 @@ export default function MediaViewer() {
   }, [currentMedia, mediaType]);
 
   const categories = [
-    "",
-    "backgrounds",
-    "fashion",
-    "nature",
-    "science",
-    "education",
-    "feelings",
-    "health",
-    "people",
-    "religion",
-    "places",
-    "animals",
-    "industry",
-    "computer",
-    "food",
-    "sports",
-    "transportation",
-    "travel",
-    "buildings",
-    "business",
-    "music",
+    { value: "", key: "allCategories" },
+    { value: "backgrounds", key: "backgrounds" },
+    { value: "fashion", key: "fashion" },
+    { value: "nature", key: "nature" },
+    { value: "science", key: "science" },
+    { value: "education", key: "education" },
+    { value: "feelings", key: "feelings" },
+    { value: "health", key: "health" },
+    { value: "people", key: "people" },
+    { value: "religion", key: "religion" },
+    { value: "places", key: "places" },
+    { value: "animals", key: "animals" },
+    { value: "industry", key: "industry" },
+    { value: "computer", key: "computer" },
+    { value: "food", key: "food" },
+    { value: "sports", key: "sports" },
+    { value: "transportation", key: "transportation" },
+    { value: "travel", key: "travel" },
+    { value: "buildings", key: "buildings" },
+    { value: "business", key: "business" },
+    { value: "music", key: "music" },
   ];
 
   const fetchRandomMedia = async () => {
@@ -149,9 +151,40 @@ export default function MediaViewer() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-4">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-4xl font-bold text-center mb-8 text-gray-800 dark:text-gray-100">
-          Random Media Generator
-        </h1>
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-4xl font-bold text-gray-800 dark:text-gray-100">
+            {t("title")}
+          </h1>
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-600 dark:text-gray-400">
+              {t("language")}:
+            </span>
+            <div className="flex border border-gray-300 dark:border-gray-600 rounded-md overflow-hidden">
+              <button
+                type="button"
+                onClick={() => setLanguage("en")}
+                className={`px-3 py-1 text-sm font-medium transition-colors ${
+                  language === "en"
+                    ? "bg-blue-600 text-white dark:bg-blue-500"
+                    : "bg-gray-50 text-gray-700 hover:bg-gray-100 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
+                }`}
+              >
+                English
+              </button>
+              <button
+                type="button"
+                onClick={() => setLanguage("ja")}
+                className={`px-3 py-1 text-sm font-medium transition-colors border-l border-gray-300 dark:border-gray-600 ${
+                  language === "ja"
+                    ? "bg-blue-600 text-white dark:bg-blue-500"
+                    : "bg-gray-50 text-gray-700 hover:bg-gray-100 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
+                }`}
+              >
+                日本語
+              </button>
+            </div>
+          </div>
+        </div>
 
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mb-6">
@@ -160,7 +193,7 @@ export default function MediaViewer() {
                 htmlFor="media-type"
                 className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300"
               >
-                Media Type
+                {t("mediaType")}
               </label>
               <select
                 id="media-type"
@@ -168,8 +201,8 @@ export default function MediaViewer() {
                 onChange={(e) => setMediaType(e.target.value as MediaType)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
               >
-                <option value="image">Image</option>
-                <option value="video">Video</option>
+                <option value="image">{t("image")}</option>
+                <option value="video">{t("video")}</option>
               </select>
             </div>
 
@@ -178,7 +211,7 @@ export default function MediaViewer() {
                 htmlFor="category"
                 className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300"
               >
-                Category
+                {t("category")}
               </label>
               <select
                 id="category"
@@ -187,8 +220,8 @@ export default function MediaViewer() {
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
               >
                 {categories.map((cat) => (
-                  <option key={cat} value={cat}>
-                    {cat || "All Categories"}
+                  <option key={cat.value} value={cat.value}>
+                    {t(cat.key)}
                   </option>
                 ))}
               </select>
@@ -199,14 +232,14 @@ export default function MediaViewer() {
                 htmlFor="search-query"
                 className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300"
               >
-                Search Query (Optional)
+                {t("searchQuery")}
               </label>
               <input
                 id="search-query"
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="e.g., sunset, cats, technology"
+                placeholder={t("searchPlaceholder")}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
               />
             </div>
@@ -216,7 +249,7 @@ export default function MediaViewer() {
                 htmlFor="orientation"
                 className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300"
               >
-                Orientation (Images Only)
+                {t("orientation")}
               </label>
               <select
                 id="orientation"
@@ -225,9 +258,9 @@ export default function MediaViewer() {
                 disabled={mediaType === "video"}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100 disabled:bg-gray-100 disabled:cursor-not-allowed dark:disabled:bg-gray-600"
               >
-                <option value="">All Orientations</option>
-                <option value="horizontal">Horizontal</option>
-                <option value="vertical">Vertical</option>
+                <option value="">{t("allOrientations")}</option>
+                <option value="horizontal">{t("horizontal")}</option>
+                <option value="vertical">{t("vertical")}</option>
               </select>
             </div>
 
@@ -236,7 +269,7 @@ export default function MediaViewer() {
                 htmlFor="randomness"
                 className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300"
               >
-                Randomness: {randomness}%
+                {t("randomness")}: {randomness}%
               </label>
               <div className="space-y-2">
                 <input
@@ -250,8 +283,8 @@ export default function MediaViewer() {
                   className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700 slider"
                 />
                 <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400">
-                  <span>Quality Focus</span>
-                  <span>Fully Random</span>
+                  <span>{t("qualityFocus")}</span>
+                  <span>{t("fullyRandom")}</span>
                 </div>
               </div>
             </div>
@@ -263,7 +296,7 @@ export default function MediaViewer() {
             disabled={loading}
             className="w-full bg-blue-600 text-white py-3 px-6 rounded-md hover:bg-blue-700 transition duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed font-medium"
           >
-            {loading ? "Loading..." : "Get Random Media"}
+            {loading ? t("loading") : t("getRandomMedia")}
           </button>
         </div>
 
@@ -278,21 +311,29 @@ export default function MediaViewer() {
             <div className="mb-4">
               {mediaType === "image" ? (
                 <div className="relative w-full flex justify-center">
-                  <Image
-                    src={
-                      currentMedia.webformatURL ||
-                      currentMedia.largeImageURL ||
-                      ""
-                    }
-                    alt={currentMedia.tags}
-                    width={currentMedia.webformatWidth || 640}
-                    height={currentMedia.webformatHeight || 480}
-                    className="max-w-full h-auto rounded-lg shadow-md"
-                    style={{ maxHeight: "600px", width: "auto" }}
-                    priority={false}
-                    placeholder="blur"
-                    blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
-                  />
+                  {currentMedia.webformatURL || currentMedia.largeImageURL ? (
+                    <Image
+                      src={
+                        currentMedia.webformatURL ||
+                        currentMedia.largeImageURL ||
+                        "/placeholder.jpg"
+                      }
+                      alt={currentMedia.tags}
+                      width={currentMedia.webformatWidth || 640}
+                      height={currentMedia.webformatHeight || 480}
+                      className="max-w-full h-auto rounded-lg shadow-md"
+                      style={{ maxHeight: "600px", width: "auto" }}
+                      priority={false}
+                      placeholder="blur"
+                      blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
+                    />
+                  ) : (
+                    <div className="flex items-center justify-center w-full h-64 bg-gray-200 dark:bg-gray-700 rounded-lg">
+                      <span className="text-gray-500 dark:text-gray-400">
+                        {t("noImageAvailable")}
+                      </span>
+                    </div>
+                  )}
                 </div>
               ) : (
                 currentMedia.videos && (
@@ -322,25 +363,26 @@ export default function MediaViewer() {
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4 text-sm">
               <div className="text-gray-600 dark:text-gray-400">
-                <span className="font-medium">Views:</span>{" "}
+                <span className="font-medium">{t("views")}:</span>{" "}
                 {currentMedia.views.toLocaleString()}
               </div>
               <div className="text-gray-600 dark:text-gray-400">
-                <span className="font-medium">Downloads:</span>{" "}
+                <span className="font-medium">{t("downloads")}:</span>{" "}
                 {currentMedia.downloads.toLocaleString()}
               </div>
               <div className="text-gray-600 dark:text-gray-400">
-                <span className="font-medium">Likes:</span>{" "}
+                <span className="font-medium">{t("likes")}:</span>{" "}
                 {currentMedia.likes.toLocaleString()}
               </div>
               <div className="text-gray-600 dark:text-gray-400">
-                <span className="font-medium">User:</span> {currentMedia.user}
+                <span className="font-medium">{t("user")}:</span>{" "}
+                {currentMedia.user}
               </div>
             </div>
 
             <div className="mb-4">
               <span className="text-gray-600 dark:text-gray-400 font-medium">
-                Tags:{" "}
+                {t("tags")}:{" "}
               </span>
               <span className="text-gray-700 dark:text-gray-300">
                 {currentMedia.tags}
@@ -353,7 +395,7 @@ export default function MediaViewer() {
                 onClick={handleDownload}
                 className="flex-1 bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 transition duration-200 font-medium"
               >
-                Download
+                {t("download")}
               </button>
               <a
                 href={currentMedia.pageURL}
@@ -361,7 +403,7 @@ export default function MediaViewer() {
                 rel="noopener noreferrer"
                 className="flex-1 bg-gray-600 text-white py-2 px-4 rounded-md hover:bg-gray-700 transition duration-200 font-medium text-center"
               >
-                View on Pixabay
+                {t("viewOnPixabay")}
               </a>
             </div>
           </div>
