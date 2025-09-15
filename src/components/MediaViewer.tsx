@@ -244,6 +244,7 @@ export default function MediaViewer() {
                       controls
                       className="max-w-full h-auto rounded-lg shadow-md"
                       style={{ maxHeight: "600px" }}
+                      aria-label={`Video: ${currentMedia.tags}`}
                     >
                       <source
                         src={
@@ -252,6 +253,22 @@ export default function MediaViewer() {
                           currentMedia.videos.small?.url
                         }
                         type="video/mp4"
+                      />
+                      {/* キャプションが利用可能な場合のプレースホルダー */}
+                      <track
+                        kind="captions"
+                        src=""
+                        srcLang="ja"
+                        label="Japanese Captions"
+                        default
+                        style={{ display: "none" }}
+                      />
+                      <track
+                        kind="captions"
+                        src=""
+                        srcLang="en"
+                        label="English Captions"
+                        style={{ display: "none" }}
                       />
                       Your browser does not support the video tag.
                     </video>
