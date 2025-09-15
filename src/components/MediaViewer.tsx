@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type MediaType = "image" | "video";
 
@@ -42,6 +42,14 @@ export default function MediaViewer() {
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [category, setCategory] = useState("");
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  // 動画が変更された時に強制的に再読み込み
+  useEffect(() => {
+    if (videoRef.current && currentMedia && mediaType === "video") {
+      videoRef.current.load();
+    }
+  }, [currentMedia, mediaType]);
 
   const categories = [
     "",
@@ -240,7 +248,9 @@ export default function MediaViewer() {
               ) : (
                 currentMedia.videos && (
                   <div className="relative w-full flex justify-center">
+                    {/* biome-ignore lint/a11y/useMediaCaption: Pixabayの動画にはキャプションファイルが提供されていないため */}
                     <video
+                      ref={videoRef}
                       controls
                       className="max-w-full h-auto rounded-lg shadow-md"
                       style={{ maxHeight: "600px" }}
@@ -253,22 +263,6 @@ export default function MediaViewer() {
                           currentMedia.videos.small?.url
                         }
                         type="video/mp4"
-                      />
-                      {/* キャプションが利用可能な場合のプレースホルダー */}
-                      <track
-                        kind="captions"
-                        src=""
-                        srcLang="ja"
-                        label="Japanese Captions"
-                        default
-                        style={{ display: "none" }}
-                      />
-                      <track
-                        kind="captions"
-                        src=""
-                        srcLang="en"
-                        label="English Captions"
-                        style={{ display: "none" }}
                       />
                       Your browser does not support the video tag.
                     </video>
