@@ -1,12 +1,14 @@
 import { NextResponse } from "next/server";
 import { selectBestMedia } from "@/utils/mediaSelector";
 
-const PIXABAY_API_KEY = process.env.PIXABAY_API_KEY;
 const PIXABAY_IMAGE_API = "https://pixabay.com/api/";
 const PIXABAY_VIDEO_API = "https://pixabay.com/api/videos/";
 
 export async function GET(request: Request) {
+  const PIXABAY_API_KEY = process.env.PIXABAY_API_KEY;
+
   if (!PIXABAY_API_KEY) {
+    console.error("PIXABAY_API_KEY is not set in environment variables");
     return NextResponse.json(
       { error: "API key not configured" },
       { status: 500 },
