@@ -223,7 +223,9 @@ export default function MediaViewer() {
                 <div className="relative w-full flex justify-center">
                   <Image
                     src={
-                      currentMedia.webformatURL || currentMedia.largeImageURL || ""
+                      currentMedia.webformatURL ||
+                      currentMedia.largeImageURL ||
+                      ""
                     }
                     alt={currentMedia.tags}
                     width={currentMedia.webformatWidth || 640}
