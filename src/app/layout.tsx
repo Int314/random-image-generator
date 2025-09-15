@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Random Media Generator",
-  description: "ランダムな画像や動画を生成してダウンロードできます",
+  description: "You can generate and download random images and videos.",
 };
 
 export default function RootLayout({
