@@ -42,6 +42,7 @@ export default function MediaViewer() {
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [category, setCategory] = useState("");
+  const [orientation, setOrientation] = useState("");
   const videoRef = useRef<HTMLVideoElement>(null);
 
   // 動画が変更された時に強制的に再読み込み
@@ -84,6 +85,7 @@ export default function MediaViewer() {
         type: mediaType,
         ...(searchQuery && { q: searchQuery }),
         ...(category && { category }),
+        ...(orientation && { orientation }),
       });
 
       const response = await fetch(`/api/random-media?${params}`);
@@ -150,7 +152,7 @@ export default function MediaViewer() {
         </h1>
 
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
             <div>
               <label
                 htmlFor="media-type"
@@ -205,6 +207,26 @@ export default function MediaViewer() {
                 placeholder="e.g., sunset, cats, technology"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
               />
+            </div>
+
+            <div>
+              <label
+                htmlFor="orientation"
+                className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300"
+              >
+                Orientation (Images Only)
+              </label>
+              <select
+                id="orientation"
+                value={orientation}
+                onChange={(e) => setOrientation(e.target.value)}
+                disabled={mediaType === "video"}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100 disabled:bg-gray-100 disabled:cursor-not-allowed dark:disabled:bg-gray-600"
+              >
+                <option value="">All Orientations</option>
+                <option value="horizontal">Horizontal</option>
+                <option value="vertical">Vertical</option>
+              </select>
             </div>
           </div>
 

@@ -17,6 +17,7 @@ export async function GET(request: Request) {
   const mediaType = searchParams.get("type") || "image";
   const category = searchParams.get("category") || "";
   const query = searchParams.get("q") || "";
+  const orientation = searchParams.get("orientation") || "";
 
   try {
     const apiUrl =
@@ -26,9 +27,11 @@ export async function GET(request: Request) {
       key: PIXABAY_API_KEY,
       image_type: "photo",
       video_type: "film",
+      editors_choice: "true",
       per_page: "200",
       ...(query && { q: query }),
       ...(category && { category }),
+      ...(orientation && mediaType === "image" && { orientation }),
     });
 
     const response = await fetch(`${apiUrl}?${params}`);
