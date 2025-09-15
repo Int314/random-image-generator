@@ -20,7 +20,7 @@ export function selectBestMedia(
   const scoredItems = mediaItems.map((item) => {
     const engagementRate = item.likes / Math.max(item.views, 1);
     const downloadRate = item.downloads / Math.max(item.views, 1);
-    const score = engagementRate * 0.3 + downloadRate * 0.7; // ウェイト調整
+    const score = engagementRate * 0.7 + downloadRate * 0.3; // ウェイト調整
     return { item, score };
   });
 
