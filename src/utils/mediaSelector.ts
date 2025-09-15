@@ -8,7 +8,10 @@ interface MediaItem {
   user: string;
 }
 
-export function selectBestMedia(mediaItems: MediaItem[]): MediaItem | null {
+export function selectBestMedia(
+  mediaItems: MediaItem[],
+  randomness: number = 50,
+): MediaItem | null {
   if (!mediaItems || mediaItems.length === 0) {
     return null;
   }
@@ -24,8 +27,16 @@ export function selectBestMedia(mediaItems: MediaItem[]): MediaItem | null {
   // スコアでソート（降順）
   scoredItems.sort((a, b) => b.score - a.score);
 
-  // 上位30%のアイテムからランダムに選択
-  const topPercentile = Math.ceil(scoredItems.length * 0.3);
+  // ランダム度合いに応じて選択範囲を決定
+  // randomness: 0% = 上位5%から選択（品質重視）
+  // randomness: 50% = 上位30%から選択（バランス）
+  // randomness: 100% = 全体から選択（完全ランダム）
+  const minPercentile = 0.05; // 最低5%
+  const maxPercentile = 1.0; // 最大100%
+  const percentage =
+    minPercentile + (randomness / 100) * (maxPercentile - minPercentile);
+  const topPercentile = Math.ceil(scoredItems.length * percentage);
+
   const topItems = scoredItems.slice(0, topPercentile);
   const randomTop = Math.floor(Math.random() * topItems.length);
 

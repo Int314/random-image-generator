@@ -18,6 +18,7 @@ export async function GET(request: Request) {
   const category = searchParams.get("category") || "";
   const query = searchParams.get("q") || "";
   const orientation = searchParams.get("orientation") || "";
+  const randomness = Number(searchParams.get("randomness")) || 50;
 
   try {
     const apiUrl =
@@ -45,7 +46,7 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: "No media found" }, { status: 404 });
     }
 
-    const selectedMedia = selectBestMedia(data.hits);
+    const selectedMedia = selectBestMedia(data.hits, randomness);
 
     if (!selectedMedia) {
       return NextResponse.json(

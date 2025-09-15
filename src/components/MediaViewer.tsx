@@ -43,6 +43,7 @@ export default function MediaViewer() {
   const [searchQuery, setSearchQuery] = useState("");
   const [category, setCategory] = useState("");
   const [orientation, setOrientation] = useState("");
+  const [randomness, setRandomness] = useState(50); // 0-100のスライダー値
   const videoRef = useRef<HTMLVideoElement>(null);
 
   // 動画が変更された時に強制的に再読み込み
@@ -86,6 +87,7 @@ export default function MediaViewer() {
         ...(searchQuery && { q: searchQuery }),
         ...(category && { category }),
         ...(orientation && { orientation }),
+        randomness: randomness.toString(),
       });
 
       const response = await fetch(`/api/random-media?${params}`);
@@ -152,7 +154,7 @@ export default function MediaViewer() {
         </h1>
 
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mb-6">
             <div>
               <label
                 htmlFor="media-type"
@@ -227,6 +229,31 @@ export default function MediaViewer() {
                 <option value="horizontal">Horizontal</option>
                 <option value="vertical">Vertical</option>
               </select>
+            </div>
+
+            <div>
+              <label
+                htmlFor="randomness"
+                className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300"
+              >
+                Randomness: {randomness}%
+              </label>
+              <div className="space-y-2">
+                <input
+                  id="randomness"
+                  type="range"
+                  min="0"
+                  max="100"
+                  step="5"
+                  value={randomness}
+                  onChange={(e) => setRandomness(Number(e.target.value))}
+                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700 slider"
+                />
+                <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400">
+                  <span>Quality Focus</span>
+                  <span>Fully Random</span>
+                </div>
+              </div>
             </div>
           </div>
 
