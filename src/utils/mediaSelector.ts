@@ -24,8 +24,8 @@ export function selectBestMedia(mediaItems: MediaItem[]): MediaItem | null {
   // スコアでソート（降順）
   scoredItems.sort((a, b) => b.score - a.score);
 
-  // 上位10%のアイテムからランダムに選択
-  const topPercentile = Math.ceil(scoredItems.length * 0.1);
+  // 上位20%のアイテムからランダムに選択
+  const topPercentile = Math.ceil(scoredItems.length * 0.2);
   const topItems = scoredItems.slice(0, topPercentile);
   const randomTop = Math.floor(Math.random() * topItems.length);
 
