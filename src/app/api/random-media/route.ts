@@ -27,7 +27,6 @@ export async function GET(request: Request) {
       key: PIXABAY_API_KEY,
       image_type: "photo",
       video_type: "film",
-      editors_choice: "true",
       per_page: "200",
       ...(query && { q: query }),
       ...(category && { category }),
