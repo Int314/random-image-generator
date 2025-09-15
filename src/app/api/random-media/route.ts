@@ -21,6 +21,7 @@ export async function GET(request: Request) {
   const query = searchParams.get("q") || "";
   const orientation = searchParams.get("orientation") || "";
   const randomness = Number(searchParams.get("randomness")) || 50;
+  const editorsChoice = searchParams.get("editors_choice") === "true";
 
   try {
     const apiUrl =
@@ -34,6 +35,7 @@ export async function GET(request: Request) {
       ...(query && { q: query }),
       ...(category && { category }),
       ...(orientation && mediaType === "image" && { orientation }),
+      ...(editorsChoice && { editors_choice: "true" }),
     });
 
     const response = await fetch(`${apiUrl}?${params}`);

@@ -46,6 +46,7 @@ export default function MediaViewer() {
   const [category, setCategory] = useState("");
   const [orientation, setOrientation] = useState("");
   const [randomness, setRandomness] = useState(50); // 0-100のスライダー値
+  const [editorsChoice, setEditorsChoice] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   // 動画が変更された時に強制的に再読み込み
@@ -90,6 +91,7 @@ export default function MediaViewer() {
         ...(category && { category }),
         ...(orientation && { orientation }),
         randomness: randomness.toString(),
+        ...(editorsChoice && { editors_choice: "true" }),
       });
 
       const response = await fetch(`/api/random-media?${params}`);
@@ -303,6 +305,20 @@ export default function MediaViewer() {
             </div>
           </div>
 
+          <div className="flex items-center justify-center mb-6">
+            <label className="flex items-center space-x-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={editorsChoice}
+                onChange={(e) => setEditorsChoice(e.target.checked)}
+                className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+              />
+              <span className="text-gray-700 dark:text-gray-300 font-medium">
+                {t("editorsChoice")}
+              </span>
+            </label>
+          </div>
+
           <button
             type="button"
             onClick={fetchRandomMedia}
@@ -335,7 +351,11 @@ export default function MediaViewer() {
                       width={currentMedia.webformatWidth || 640}
                       height={currentMedia.webformatHeight || 480}
                       className="max-w-full h-auto rounded-lg shadow-md"
-                      style={{ maxHeight: "600px", width: "auto", height: "auto" }}
+                      style={{
+                        maxHeight: "600px",
+                        width: "auto",
+                        height: "auto",
+                      }}
                       priority={false}
                       placeholder="blur"
                       blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="

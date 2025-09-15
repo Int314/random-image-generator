@@ -33,6 +33,7 @@ const translations = {
     randomness: "Randomness",
     qualityFocus: "Quality Focus",
     fullyRandom: "Fully Random",
+    editorsChoice: "High-quality media",
 
     // Buttons
     getRandomMedia: "Get Media",
@@ -99,6 +100,7 @@ const translations = {
     randomness: "ランダム度",
     qualityFocus: "品質重視",
     fullyRandom: "完全ランダム",
+    editorsChoice: "高品質メディア",
 
     // Buttons
     getRandomMedia: "メディアを取得",
