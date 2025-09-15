@@ -221,13 +221,18 @@ export default function MediaViewer() {
             <div className="mb-4">
               {mediaType === "image" ? (
                 <div className="relative w-full flex justify-center">
-                  <img
+                  <Image
                     src={
-                      currentMedia.webformatURL || currentMedia.largeImageURL
+                      currentMedia.webformatURL || currentMedia.largeImageURL || ""
                     }
                     alt={currentMedia.tags}
+                    width={currentMedia.webformatWidth || 640}
+                    height={currentMedia.webformatHeight || 480}
                     className="max-w-full h-auto rounded-lg shadow-md"
-                    style={{ maxHeight: "600px" }}
+                    style={{ maxHeight: "600px", width: "auto" }}
+                    priority={false}
+                    placeholder="blur"
+                    blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
                   />
                 </div>
               ) : (
